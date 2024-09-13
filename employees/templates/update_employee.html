@@ -1,0 +1,12 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<link rel="stylesheet" href="{% static  'form.css' %}" />
+<div class="form-container">
+  <h1>Update Employee Information</h1>
+  <form method="post" novalidate>
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit" class="submit-button">Save Changes</button>
+  </form>
+  <a href="{% url 'delete_update_employee' %}">Cancel</a>
+</div>
+
+{% endblock %}

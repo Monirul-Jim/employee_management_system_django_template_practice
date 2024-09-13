@@ -1,6 +1,33 @@
 {% extends 'base.html' %} {% block content %} {% load static %}
 <link rel="stylesheet" href="{% static 'banner.css' %}" />
+<link rel="stylesheet" href="{% static 'card.css' %}" />
 <div class="banner">
   <h1>Welcome Employee Management System</h1>
+</div>
+
+<div class="intro-text">
+  <h1>All Our Employees</h1>
+  <p>
+    Below is a list of our valued employees. Each profile contains essential
+    details about their roles, contact information, and a brief description of
+    their responsibilities. Explore the profiles to learn more about the
+    individuals contributing to the success of our organization.
+  </p>
+</div>
+<div class="card-container">
+  {% if employees %} {% for employee in employees %}
+  <div class="card">
+    <h2>{{ employee.name }}</h2>
+    <p><strong>Address:</strong> {{ employee.address }}</p>
+    <p><strong>Phone Number:</strong> {{ employee.phone_number }}</p>
+    <p><strong>Salary:</strong> {{ employee.salary }}</p>
+    <p><strong>Designation:</strong> {{ employee.designation }}</p>
+    <p><strong>Description:</strong> {{ employee.description }}</p>
+  </div>
+  {% endfor %} {% else %}
+  <h3>
+    Something went wrong, please wait for the admin to add employee details.
+  </h3>
+  {% endif %}
 </div>
 {% endblock %}

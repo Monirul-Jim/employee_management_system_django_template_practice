@@ -13,7 +13,9 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
+
     <link rel="stylesheet" href="{% static 'navbar.css' %}" />
+    <link rel="stylesheet" href="{% static 'footer.css' %}" />
   </head>
 
   <body>
@@ -38,7 +40,11 @@
         <li><a href="/admin/">Admin</a></li>
         {% if user.is_authenticated %}
         <li><a href="{% url 'add_employee' %}"> Add Employee</a></li>
-        <li><a href="">Update/Delete Employee</a></li>
+        <li>
+          <a href="{% url 'delete_update_employee' %}"
+            >Update/Delete Employee</a
+          >
+        </li>
         <li><a href="{% url 'user_logout' %}">Logout</a></li>
         {% else %}
         <li><a href="{% url 'login' %}">Login</a></li>
@@ -47,5 +53,73 @@
       </ul>
     </nav>
     {% block content %} {% endblock %}
+    <footer class="footer">
+      <div class="footer-container">
+        <!-- About Us Section -->
+        <div class="footer-column">
+          <h3>About Us</h3>
+          <p>
+            We are dedicated to managing employee data and providing efficient
+            tools for employee management. Our goal is to help organizations
+            grow by ensuring seamless workforce management.
+          </p>
+        </div>
+
+        <!-- Quick Links Section -->
+        <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul class="quick-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Employee Directory</a></li>
+            <li><a href="#">Company Policies</a></li>
+            <li><a href="#">Support</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact Us Section -->
+        <div class="footer-column">
+          <h3>Contact Us</h3>
+          <p>Email: info@company.com</p>
+          <p>Phone: +1 (123) 456-7890</p>
+          <p>Address: 123 Business Lane, City, Country</p>
+        </div>
+
+        <!-- Newsletter Subscription Section -->
+        <div class="footer-column">
+          <h3>Subscribe to Our Newsletter</h3>
+          <p>
+            Get the latest updates about employee management and our services.
+          </p>
+          <form class="newsletter-form">
+            <input type="email" placeholder="Enter your email" required />
+            <button type="submit">Subscribe</button>
+          </form>
+        </div>
+
+        <!-- Social Links Section -->
+        <div class="footer-column">
+          <h3>Follow Us</h3>
+          <ul class="social-links">
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="#">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Legal Info Section -->
+      <div class="footer-legal">
+        <div class="legal-container">
+          <p>&copy; 2024 Employee Management System. All rights reserved.</p>
+          <ul class="legal-links">
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>

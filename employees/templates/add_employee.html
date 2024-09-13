@@ -1,7 +1,10 @@
 {% extends 'base.html' %} {% block content%} {% load static %}
 <link rel="stylesheet" href="{% static 'form.css' %}" />
 <div class="form-container">
-  <form method="post" novalidate>{% csrf_token %} {{form.as_p}}</form>
+  <form method="post" novalidate>
+    {% csrf_token %} {{form.as_p}}
+    <button class="submit-button" type="submit">Add Employee</button>
+  </form>
 </div>
 
 {% endblock%}

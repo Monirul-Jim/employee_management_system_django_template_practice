@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from employees.forms import EmployeeRegistrationForm
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from employees.forms import EmployeeForm
+from employees.models import EmployeeModel
 # Create your views here.
 
 
@@ -53,8 +54,35 @@ def add_employee(request):
     if request.method == 'POST':
         form = EmployeeForm(request.POST)
         if form.is_valid():
-            form.save()
+            form.save(user=request.user)
             return redirect('home')
     else:
         form = EmployeeForm()
     return render(request, 'add_employee.html', {'form': form})
+
+
+def employee_list(request):
+    employees = EmployeeModel.objects.filter(user=request.user)
+    context = {'employees': employees}
+    return render(request, 'update_delete.html', context)
+
+
+def update_employee(request, id):
+    employee = get_object_or_404(EmployeeModel, id=id, user=request.user)
+
+    if request.method == 'POST':
+        form = EmployeeForm(request.POST, instance=employee)
+        if form.is_valid():
+            form.save()
+            return redirect('delete_update_employee')
+    else:
+        form = EmployeeForm(instance=employee)
+    return render(request, 'update_employee.html', {'form': form})
+
+
+def delete_employee(request, id):
+    employee = get_object_or_404(EmployeeModel, id=id, user=request.user)
+    if request.method == 'POST':
+        employee.delete()
+        return redirect('delete_update_employee')
+    return render(request, 'confirm_delete.html', {'employee': employee})
