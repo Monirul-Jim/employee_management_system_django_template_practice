@@ -59,24 +59,22 @@ class EmployeeRegistrationForm(UserCreationForm):
 class EmployeeForm(forms.ModelForm):
     class Meta:
         model = EmployeeModel
-        fields = ['name', 'address', 'phone_number',
-                  'designation', 'salary', 'description']
+        fields = '__all__'
 
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)  # Extract user from kwargs
+        self.user = kwargs.pop('user', None)
         super(EmployeeForm, self).__init__(*args, **kwargs)
 
-        # If the form is being used to update (i.e., there's an instance)
         if self.instance and self.instance.pk:
-            # If the user is not a superuser, make designation and salary fields read-only
             if self.user and not self.user.is_superuser:
-                self.fields['designation'].widget.attrs['readonly'] = True
-                self.fields['salary'].widget.attrs['readonly'] = True
+                # self.fields['designation'].widget.attrs['readonly'] = True
+                # self.fields['salary'].widget.attrs['readonly'] = True
+                del self.fields['designation']
+                del self.fields['salary']
+                del self.fields['user']
 
     def save(self, commit=True):
         employee = super(EmployeeForm, self).save(commit=False)
-
-        # If the user is not a superuser, do not update the designation or salary
         if not self.user.is_superuser and self.instance and self.instance.pk:
             employee.designation = self.instance.designation
             employee.salary = self.instance.salary

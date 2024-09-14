@@ -36,6 +36,7 @@ form p {
 
 input[type="email"],
 input[type="password"],
+input[type="number"],
 input[type="text"],
 textarea,
 select {
@@ -69,4 +70,12 @@ textarea:focus {
 .success {
   color: white;
   background-color: green;
+}
+.cancel {
+  background-color: red;
+  padding: 10px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }

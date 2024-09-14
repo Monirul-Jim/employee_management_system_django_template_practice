@@ -32,6 +32,70 @@
         "documentation": {}
     },
     {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
         "label": "models",
         "importPath": "django.db",
         "description": "django.db",
@@ -46,6 +110,22 @@
         "importPath": "django.db.models.deletion",
         "description": "django.db.models.deletion",
         "detail": "django.db.models.deletion",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
         "documentation": {}
     },
     {
@@ -357,6 +437,42 @@
         "documentation": {}
     },
     {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "employees.migrations.0003_alter_employeemodel_address_and_more",
+        "description": "employees.migrations.0003_alter_employeemodel_address_and_more",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('employees', '0002_employeemodel_user'),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='employeemodel',\n            name='address',\n            field=models.CharField(max_length=100),\n        ),",
+        "detail": "employees.migrations.0003_alter_employeemodel_address_and_more",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "employees.migrations.0004_alter_employeemodel_phone_number",
+        "description": "employees.migrations.0004_alter_employeemodel_phone_number",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('employees', '0003_alter_employeemodel_address_and_more'),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='employeemodel',\n            name='phone_number',\n            field=models.IntegerField(),\n        ),",
+        "detail": "employees.migrations.0004_alter_employeemodel_phone_number",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "employees.migrations.0005_alter_employeemodel_user",
+        "description": "employees.migrations.0005_alter_employeemodel_user",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('employees', '0004_alter_employeemodel_phone_number'),\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='employeemodel',\n            name='user',\n            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, unique=True),",
+        "detail": "employees.migrations.0005_alter_employeemodel_user",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "employees.migrations.0006_alter_employeemodel_user",
+        "description": "employees.migrations.0006_alter_employeemodel_user",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('employees', '0005_alter_employeemodel_user'),\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='employeemodel',\n            name='user',\n            field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),",
+        "detail": "employees.migrations.0006_alter_employeemodel_user",
+        "documentation": {}
+    },
+    {
         "label": "EmployeesConfig",
         "kind": 6,
         "importPath": "employees.apps",
@@ -379,7 +495,7 @@
         "kind": 6,
         "importPath": "employees.forms",
         "description": "employees.forms",
-        "peekOfCode": "class EmployeeForm(forms.ModelForm):\n    class Meta:\n        model = EmployeeModel\n        fields = ['name', 'address', 'phone_number',\n                  'designation', 'salary', 'description']\n    def __init__(self, *args, **kwargs):\n        self.user = kwargs.pop('user', None)  # Extract user from kwargs\n        super(EmployeeForm, self).__init__(*args, **kwargs)\n        # If the form is being used to update (i.e., there's an instance)\n        if self.instance and self.instance.pk:",
+        "peekOfCode": "class EmployeeForm(forms.ModelForm):\n    class Meta:\n        model = EmployeeModel\n        fields = '__all__'\n    def __init__(self, *args, **kwargs):\n        self.user = kwargs.pop('user', None)\n        super(EmployeeForm, self).__init__(*args, **kwargs)\n        if self.instance and self.instance.pk:\n            if self.user and not self.user.is_superuser:\n                # self.fields['designation'].widget.attrs['readonly'] = True",
         "detail": "employees.forms",
         "documentation": {}
     },
@@ -388,7 +504,7 @@
         "kind": 6,
         "importPath": "employees.models",
         "description": "employees.models",
-        "peekOfCode": "class EmployeeModel(models.Model):\n    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)\n    name = models.CharField(max_length=100)\n    address = models.TextField()\n    phone_number = models.CharField(max_length=15)\n    salary = models.DecimalField(max_digits=10, decimal_places=2)\n    designation = models.CharField(max_length=100)\n    description = models.TextField()\n    def __str__(self):\n        return self.name",
+        "peekOfCode": "class EmployeeModel(models.Model):\n    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)\n    name = models.CharField(max_length=100)\n    address = models.CharField(max_length=100)\n    phone_number = models.IntegerField()\n    salary = models.DecimalField(max_digits=10, decimal_places=2)\n    designation = models.CharField(max_length=100)\n    description = models.TextField()\n    def __str__(self):\n        return self.name",
         "detail": "employees.models",
         "documentation": {}
     },
@@ -424,7 +540,7 @@
         "kind": 2,
         "importPath": "employees.views",
         "description": "employees.views",
-        "peekOfCode": "def user_logout(request):\n    logout(request)\n    return redirect('login')\ndef add_employee(request):\n    if request.method == 'POST':\n        form = EmployeeForm(request.POST)\n        if form.is_valid():\n            form.save(user=request.user)\n            return redirect('home')\n    else:",
+        "peekOfCode": "def user_logout(request):\n    logout(request)\n    return redirect('login')\ndef add_employee(request):\n    if request.method == 'POST':\n        existing_employee = EmployeeModel.objects.filter(\n            user=request.user).first()\n        if existing_employee:\n            form = EmployeeForm(\n                request.POST, instance=existing_employee, user=request.user)",
         "detail": "employees.views",
         "documentation": {}
     },
@@ -433,7 +549,16 @@
         "kind": 2,
         "importPath": "employees.views",
         "description": "employees.views",
-        "peekOfCode": "def add_employee(request):\n    if request.method == 'POST':\n        form = EmployeeForm(request.POST)\n        if form.is_valid():\n            form.save(user=request.user)\n            return redirect('home')\n    else:\n        form = EmployeeForm()\n    return render(request, 'add_employee.html', {'form': form})\n# def employee_list(request):",
+        "peekOfCode": "def add_employee(request):\n    if request.method == 'POST':\n        existing_employee = EmployeeModel.objects.filter(\n            user=request.user).first()\n        if existing_employee:\n            form = EmployeeForm(\n                request.POST, instance=existing_employee, user=request.user)\n        else:\n            form = EmployeeForm(request.POST, user=request.user)\n        if form.is_valid():",
+        "detail": "employees.views",
+        "documentation": {}
+    },
+    {
+        "label": "employee_list",
+        "kind": 2,
+        "importPath": "employees.views",
+        "description": "employees.views",
+        "peekOfCode": "def employee_list(request):\n    employees = EmployeeModel.objects.filter(user=request.user)\n    context = {'employees': employees}\n    return render(request, 'update_delete.html', context)\ndef employee_list(request):\n    if request.user.is_superuser:\n        employee = EmployeeModel.objects.all()\n    else:\n        employee = EmployeeModel.objects.filter(user=request.user)\n    return render(request, 'update_delete.html', {'employees': employee})",
         "detail": "employees.views",
         "documentation": {}
     },
@@ -460,7 +585,7 @@
         "kind": 2,
         "importPath": "employees.views",
         "description": "employees.views",
-        "peekOfCode": "def delete_employee(request, id):\n    # Get the employee object\n    employee = get_object_or_404(EmployeeModel, id=id)\n    # Allow only superusers to delete\n    if not request.user.is_superuser:\n        return HttpResponseForbidden(\"You are not allowed to delete this employee.\")\n    if request.method == 'POST':\n        employee.delete()\n        return redirect('delete_update_employee')\n    return render(request, 'confirm_delete.html', {'employee': employee})",
+        "peekOfCode": "def delete_employee(request, id):\n    employee = get_object_or_404(EmployeeModel, id=id)\n    if not request.user.is_superuser:\n        return HttpResponseForbidden(\"You are not allowed to delete this employee.\")\n    if request.method == 'POST':\n        employee.delete()\n        return redirect('delete_update_employee')\n    return render(request, 'confirm_delete.html', {'employee': employee})",
         "detail": "employees.views",
         "documentation": {}
     },
