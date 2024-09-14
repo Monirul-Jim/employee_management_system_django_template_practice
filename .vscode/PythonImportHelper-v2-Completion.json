@@ -273,6 +273,22 @@
         "documentation": {}
     },
     {
+        "label": "HttpResponseForbidden",
+        "importPath": "django.http",
+        "description": "django.http",
+        "isExtraImport": true,
+        "detail": "django.http",
+        "documentation": {}
+    },
+    {
+        "label": "HttpResponse",
+        "importPath": "django.http",
+        "description": "django.http",
+        "isExtraImport": true,
+        "detail": "django.http",
+        "documentation": {}
+    },
+    {
         "label": "os",
         "kind": 6,
         "isExtraImport": true,
@@ -303,14 +319,6 @@
         "description": "employee_management_application.views",
         "isExtraImport": true,
         "detail": "employee_management_application.views",
-        "documentation": {}
-    },
-    {
-        "label": "HttpResponse",
-        "importPath": "django.http",
-        "description": "django.http",
-        "isExtraImport": true,
-        "detail": "django.http",
         "documentation": {}
     },
     {
@@ -371,7 +379,7 @@
         "kind": 6,
         "importPath": "employees.forms",
         "description": "employees.forms",
-        "peekOfCode": "class EmployeeForm(forms.ModelForm):\n    class Meta:\n        model = EmployeeModel\n        fields = ['name', 'address', 'phone_number',\n                  'designation', 'salary', 'description']\n    def __init__(self, *args, **kwargs):\n        super(EmployeeForm, self).__init__(*args, **kwargs)\n        # Check if the form is being used to update (i.e., there's an instance)\n        if self.instance and self.instance.pk:\n            # If updating, make designation and salary fields read-only",
+        "peekOfCode": "class EmployeeForm(forms.ModelForm):\n    class Meta:\n        model = EmployeeModel\n        fields = ['name', 'address', 'phone_number',\n                  'designation', 'salary', 'description']\n    def __init__(self, *args, **kwargs):\n        self.user = kwargs.pop('user', None)  # Extract user from kwargs\n        super(EmployeeForm, self).__init__(*args, **kwargs)\n        # If the form is being used to update (i.e., there's an instance)\n        if self.instance and self.instance.pk:",
         "detail": "employees.forms",
         "documentation": {}
     },
@@ -425,7 +433,7 @@
         "kind": 2,
         "importPath": "employees.views",
         "description": "employees.views",
-        "peekOfCode": "def add_employee(request):\n    if request.method == 'POST':\n        form = EmployeeForm(request.POST)\n        if form.is_valid():\n            form.save(user=request.user)\n            return redirect('home')\n    else:\n        form = EmployeeForm()\n    return render(request, 'add_employee.html', {'form': form})\ndef employee_list(request):",
+        "peekOfCode": "def add_employee(request):\n    if request.method == 'POST':\n        form = EmployeeForm(request.POST)\n        if form.is_valid():\n            form.save(user=request.user)\n            return redirect('home')\n    else:\n        form = EmployeeForm()\n    return render(request, 'add_employee.html', {'form': form})\n# def employee_list(request):",
         "detail": "employees.views",
         "documentation": {}
     },
@@ -434,7 +442,7 @@
         "kind": 2,
         "importPath": "employees.views",
         "description": "employees.views",
-        "peekOfCode": "def employee_list(request):\n    employees = EmployeeModel.objects.filter(user=request.user)\n    context = {'employees': employees}\n    return render(request, 'update_delete.html', context)\ndef update_employee(request, id):\n    employee = get_object_or_404(EmployeeModel, id=id, user=request.user)\n    if request.method == 'POST':\n        form = EmployeeForm(request.POST, instance=employee)\n        if form.is_valid():\n            form.save()",
+        "peekOfCode": "def employee_list(request):\n    if request.user.is_superuser:\n        employee = EmployeeModel.objects.all()\n    else:\n        employee = EmployeeModel.objects.filter(user=request.user)\n    return render(request, 'update_delete.html', {'employees': employee})\n# def update_employee(request, id):\n#     employee = get_object_or_404(EmployeeModel, id=id, user=request.user)\n#     if request.method == 'POST':\n#         form = EmployeeForm(request.POST, instance=employee)",
         "detail": "employees.views",
         "documentation": {}
     },
@@ -443,7 +451,7 @@
         "kind": 2,
         "importPath": "employees.views",
         "description": "employees.views",
-        "peekOfCode": "def update_employee(request, id):\n    employee = get_object_or_404(EmployeeModel, id=id, user=request.user)\n    if request.method == 'POST':\n        form = EmployeeForm(request.POST, instance=employee)\n        if form.is_valid():\n            form.save()\n            return redirect('delete_update_employee')\n    else:\n        form = EmployeeForm(instance=employee)\n    return render(request, 'update_employee.html', {'form': form})",
+        "peekOfCode": "def update_employee(request, id):\n    employee = get_object_or_404(EmployeeModel, id=id)\n    if not request.user.is_superuser and employee.user != request.user:\n        return HttpResponseForbidden(\"You are not allowed to update this employee.\")\n    if request.method == 'POST':\n        form = EmployeeForm(request.POST, instance=employee, user=request.user)\n        if form.is_valid():\n            form.save()\n            return redirect('delete_update_employee')\n    else:",
         "detail": "employees.views",
         "documentation": {}
     },
@@ -452,7 +460,7 @@
         "kind": 2,
         "importPath": "employees.views",
         "description": "employees.views",
-        "peekOfCode": "def delete_employee(request, id):\n    employee = get_object_or_404(EmployeeModel, id=id, user=request.user)\n    if request.method == 'POST':\n        employee.delete()\n        return redirect('delete_update_employee')\n    return render(request, 'confirm_delete.html', {'employee': employee})",
+        "peekOfCode": "def delete_employee(request, id):\n    # Get the employee object\n    employee = get_object_or_404(EmployeeModel, id=id)\n    # Allow only superusers to delete\n    if not request.user.is_superuser:\n        return HttpResponseForbidden(\"You are not allowed to delete this employee.\")\n    if request.method == 'POST':\n        employee.delete()\n        return redirect('delete_update_employee')\n    return render(request, 'confirm_delete.html', {'employee': employee})",
         "detail": "employees.views",
         "documentation": {}
     },

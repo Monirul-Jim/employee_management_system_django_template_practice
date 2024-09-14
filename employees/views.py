@@ -5,6 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from employees.forms import EmployeeForm
 from employees.models import EmployeeModel
+from django.http import HttpResponseForbidden
 # Create your views here.
 
 
@@ -61,28 +62,61 @@ def add_employee(request):
     return render(request, 'add_employee.html', {'form': form})
 
 
+# def employee_list(request):
+#     employees = EmployeeModel.objects.filter(user=request.user)
+#     context = {'employees': employees}
+#     return render(request, 'update_delete.html', context)
 def employee_list(request):
-    employees = EmployeeModel.objects.filter(user=request.user)
-    context = {'employees': employees}
-    return render(request, 'update_delete.html', context)
+    if request.user.is_superuser:
+        employee = EmployeeModel.objects.all()
+    else:
+        employee = EmployeeModel.objects.filter(user=request.user)
+    return render(request, 'update_delete.html', {'employees': employee})
 
 
+# def update_employee(request, id):
+#     employee = get_object_or_404(EmployeeModel, id=id, user=request.user)
+
+#     if request.method == 'POST':
+#         form = EmployeeForm(request.POST, instance=employee)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('delete_update_employee')
+#     else:
+#         form = EmployeeForm(instance=employee)
+#     return render(request, 'update_employee.html', {'form': form})
 def update_employee(request, id):
-    employee = get_object_or_404(EmployeeModel, id=id, user=request.user)
+    employee = get_object_or_404(EmployeeModel, id=id)
+
+    if not request.user.is_superuser and employee.user != request.user:
+        return HttpResponseForbidden("You are not allowed to update this employee.")
 
     if request.method == 'POST':
-        form = EmployeeForm(request.POST, instance=employee)
+        form = EmployeeForm(request.POST, instance=employee, user=request.user)
         if form.is_valid():
             form.save()
             return redirect('delete_update_employee')
     else:
-        form = EmployeeForm(instance=employee)
+        form = EmployeeForm(instance=employee, user=request.user)
     return render(request, 'update_employee.html', {'form': form})
 
 
+# def delete_employee(request, id):
+#     employee = get_object_or_404(EmployeeModel, id=id, user=request.user)
+#     if request.method == 'POST':
+#         employee.delete()
+#         return redirect('delete_update_employee')
+#     return render(request, 'confirm_delete.html', {'employee': employee})
 def delete_employee(request, id):
-    employee = get_object_or_404(EmployeeModel, id=id, user=request.user)
+    # Get the employee object
+    employee = get_object_or_404(EmployeeModel, id=id)
+
+    # Allow only superusers to delete
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("You are not allowed to delete this employee.")
+
     if request.method == 'POST':
         employee.delete()
         return redirect('delete_update_employee')
+
     return render(request, 'confirm_delete.html', {'employee': employee})

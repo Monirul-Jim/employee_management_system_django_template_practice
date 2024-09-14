@@ -13,7 +13,9 @@
         <th>Designation</th>
         <th>Description</th>
         <th>Update</th>
+        {% if user.is_authenticated %} {% if user.is_superuser %}
         <th>Delete</th>
+        {% endif %} {% endif %}
       </tr>
     </thead>
 
@@ -31,11 +33,13 @@
             <button class="update-button">Update</button>
           </a>
         </td>
+        {% if user.is_authenticated and user.is_superuser %}
         <td>
           <a href="{% url 'delete_employee' employee.id %}">
             <button class="delete-button">Delete</button>
           </a>
         </td>
+        {% endif %}
       </tr>
       {% endfor %}
     </tbody>

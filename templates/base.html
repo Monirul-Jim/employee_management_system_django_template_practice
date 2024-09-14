@@ -38,8 +38,9 @@
       <ul>
         <li><a class="active" href="{% url 'home' %}">Home</a></li>
         <li><a href="/admin/">Admin</a></li>
-        {% if user.is_authenticated %}
-        <li><a href="{% url 'add_employee' %}"> Add Employee</a></li>
+        {% if user.is_authenticated %} {% if user.is_superuser %}
+        <li><a href="{% url 'add_employee' %}">Add Employee</a></li>
+        {% endif %}
         <li>
           <a href="{% url 'delete_update_employee' %}"
             >Update/Delete Employee</a
