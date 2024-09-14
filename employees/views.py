@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from employees.forms import EmployeeForm
 from employees.models import EmployeeModel
 from django.http import HttpResponseForbidden
+from django.contrib.auth.decorators import login_required, user_passes_test
 # Create your views here.
 
 
@@ -51,6 +52,8 @@ def user_logout(request):
     return redirect('login')
 
 
+@user_passes_test(lambda u: u.is_superuser)
+# @login_required
 def add_employee(request):
     if request.method == 'POST':
         existing_employee = EmployeeModel.objects.filter(
@@ -71,12 +74,12 @@ def add_employee(request):
     return render(request, 'add_employee.html', {'form': form})
 
 
-def employee_list(request):
-    employees = EmployeeModel.objects.filter(user=request.user)
-    context = {'employees': employees}
-    return render(request, 'update_delete.html', context)
+# def employee_list(request):
+#     employees = EmployeeModel.objects.filter(user=request.user)
+#     context = {'employees': employees}
+#     return render(request, 'update_delete.html', context)
 
-
+@login_required
 def employee_list(request):
     if request.user.is_superuser:
         employee = EmployeeModel.objects.all()
@@ -96,6 +99,7 @@ def employee_list(request):
 #     else:
 #         form = EmployeeForm(instance=employee)
 #     return render(request, 'update_employee.html', {'form': form})
+@login_required
 def update_employee(request, id):
     employee = get_object_or_404(EmployeeModel, id=id)
 
@@ -118,6 +122,7 @@ def update_employee(request, id):
 #         employee.delete()
 #         return redirect('delete_update_employee')
 #     return render(request, 'confirm_delete.html', {'employee': employee})
+@login_required
 def delete_employee(request, id):
     employee = get_object_or_404(EmployeeModel, id=id)
     if not request.user.is_superuser:

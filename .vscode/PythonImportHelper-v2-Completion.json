@@ -241,6 +241,14 @@
         "documentation": {}
     },
     {
+        "label": "ValidationError",
+        "importPath": "django.core.exceptions",
+        "description": "django.core.exceptions",
+        "isExtraImport": true,
+        "detail": "django.core.exceptions",
+        "documentation": {}
+    },
+    {
         "label": "TestCase",
         "importPath": "django.test",
         "description": "django.test",
@@ -366,6 +374,22 @@
         "description": "django.http",
         "isExtraImport": true,
         "detail": "django.http",
+        "documentation": {}
+    },
+    {
+        "label": "login_required",
+        "importPath": "django.contrib.auth.decorators",
+        "description": "django.contrib.auth.decorators",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth.decorators",
+        "documentation": {}
+    },
+    {
+        "label": "user_passes_test",
+        "importPath": "django.contrib.auth.decorators",
+        "description": "django.contrib.auth.decorators",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth.decorators",
         "documentation": {}
     },
     {
@@ -504,7 +528,7 @@
         "kind": 6,
         "importPath": "employees.models",
         "description": "employees.models",
-        "peekOfCode": "class EmployeeModel(models.Model):\n    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)\n    name = models.CharField(max_length=100)\n    address = models.CharField(max_length=100)\n    phone_number = models.IntegerField()\n    salary = models.DecimalField(max_digits=10, decimal_places=2)\n    designation = models.CharField(max_length=100)\n    description = models.TextField()\n    def __str__(self):\n        return self.name",
+        "peekOfCode": "class EmployeeModel(models.Model):\n    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)\n    name = models.CharField(max_length=100)\n    address = models.CharField(max_length=100)\n    phone_number = models.IntegerField()\n    salary = models.DecimalField(max_digits=10, decimal_places=2)\n    designation = models.CharField(max_length=100)\n    description = models.TextField()\n    def clean(self):\n        if self.salary < 0:",
         "detail": "employees.models",
         "documentation": {}
     },
@@ -540,7 +564,7 @@
         "kind": 2,
         "importPath": "employees.views",
         "description": "employees.views",
-        "peekOfCode": "def user_logout(request):\n    logout(request)\n    return redirect('login')\ndef add_employee(request):\n    if request.method == 'POST':\n        existing_employee = EmployeeModel.objects.filter(\n            user=request.user).first()\n        if existing_employee:\n            form = EmployeeForm(\n                request.POST, instance=existing_employee, user=request.user)",
+        "peekOfCode": "def user_logout(request):\n    logout(request)\n    return redirect('login')\n@user_passes_test(lambda u: u.is_superuser)\n# @login_required\ndef add_employee(request):\n    if request.method == 'POST':\n        existing_employee = EmployeeModel.objects.filter(\n            user=request.user).first()\n        if existing_employee:",
         "detail": "employees.views",
         "documentation": {}
     },
@@ -550,15 +574,6 @@
         "importPath": "employees.views",
         "description": "employees.views",
         "peekOfCode": "def add_employee(request):\n    if request.method == 'POST':\n        existing_employee = EmployeeModel.objects.filter(\n            user=request.user).first()\n        if existing_employee:\n            form = EmployeeForm(\n                request.POST, instance=existing_employee, user=request.user)\n        else:\n            form = EmployeeForm(request.POST, user=request.user)\n        if form.is_valid():",
-        "detail": "employees.views",
-        "documentation": {}
-    },
-    {
-        "label": "employee_list",
-        "kind": 2,
-        "importPath": "employees.views",
-        "description": "employees.views",
-        "peekOfCode": "def employee_list(request):\n    employees = EmployeeModel.objects.filter(user=request.user)\n    context = {'employees': employees}\n    return render(request, 'update_delete.html', context)\ndef employee_list(request):\n    if request.user.is_superuser:\n        employee = EmployeeModel.objects.all()\n    else:\n        employee = EmployeeModel.objects.filter(user=request.user)\n    return render(request, 'update_delete.html', {'employees': employee})",
         "detail": "employees.views",
         "documentation": {}
     },
@@ -711,7 +726,7 @@
         "kind": 5,
         "importPath": "employee_management_application.settings",
         "description": "employee_management_application.settings",
-        "peekOfCode": "TIME_ZONE = 'UTC'\nUSE_I18N = True\nUSE_TZ = True\nSTATICFILES_DIRS = [\n    BASE_DIR/'static'\n]\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\n# Default primary key field type",
+        "peekOfCode": "TIME_ZONE = 'UTC'\nUSE_I18N = True\nUSE_TZ = True\nSTATICFILES_DIRS = [\n    BASE_DIR/'static'\n]\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\nLOGIN_URL = 'login'",
         "detail": "employee_management_application.settings",
         "documentation": {}
     },
@@ -720,7 +735,7 @@
         "kind": 5,
         "importPath": "employee_management_application.settings",
         "description": "employee_management_application.settings",
-        "peekOfCode": "USE_I18N = True\nUSE_TZ = True\nSTATICFILES_DIRS = [\n    BASE_DIR/'static'\n]\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field",
+        "peekOfCode": "USE_I18N = True\nUSE_TZ = True\nSTATICFILES_DIRS = [\n    BASE_DIR/'static'\n]\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\nLOGIN_URL = 'login'\n# Default primary key field type",
         "detail": "employee_management_application.settings",
         "documentation": {}
     },
@@ -729,7 +744,7 @@
         "kind": 5,
         "importPath": "employee_management_application.settings",
         "description": "employee_management_application.settings",
-        "peekOfCode": "USE_TZ = True\nSTATICFILES_DIRS = [\n    BASE_DIR/'static'\n]\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'",
+        "peekOfCode": "USE_TZ = True\nSTATICFILES_DIRS = [\n    BASE_DIR/'static'\n]\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\nLOGIN_URL = 'login'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field",
         "detail": "employee_management_application.settings",
         "documentation": {}
     },
@@ -738,7 +753,7 @@
         "kind": 5,
         "importPath": "employee_management_application.settings",
         "description": "employee_management_application.settings",
-        "peekOfCode": "STATICFILES_DIRS = [\n    BASE_DIR/'static'\n]\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'",
+        "peekOfCode": "STATICFILES_DIRS = [\n    BASE_DIR/'static'\n]\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\nLOGIN_URL = 'login'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'",
         "detail": "employee_management_application.settings",
         "documentation": {}
     },
@@ -747,7 +762,16 @@
         "kind": 5,
         "importPath": "employee_management_application.settings",
         "description": "employee_management_application.settings",
-        "peekOfCode": "STATIC_URL = 'static/'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'",
+        "peekOfCode": "STATIC_URL = 'static/'\nLOGIN_URL = 'login'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'",
+        "detail": "employee_management_application.settings",
+        "documentation": {}
+    },
+    {
+        "label": "LOGIN_URL",
+        "kind": 5,
+        "importPath": "employee_management_application.settings",
+        "description": "employee_management_application.settings",
+        "peekOfCode": "LOGIN_URL = 'login'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'",
         "detail": "employee_management_application.settings",
         "documentation": {}
     },

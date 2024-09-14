@@ -1,8 +1,11 @@
 {% extends 'base.html' %} {% block content %} {% load static %}
 <link rel="stylesheet" href="{% static 'table.css' %}" />
 <h1>Employee List</h1>
+<h1>this fjdfkdf jd fd</h1>
 <div class="table-responsive">
-  {% if employees %}
+  <h1>jdf dfjdfj ds</h1>
+  {% comment %} {% if employees %}
+  <h2>djdkf fjdkf dsfsd</h2>
   <table>
     <thead>
       <tr>
@@ -13,9 +16,9 @@
         <th>Designation</th>
         <th>Description</th>
         <th>Update</th>
-        {% if user.is_authenticated %} {% if user.is_superuser %}
+        {% if user.is_authenticated and user.is_superuser %}
         <th>Delete</th>
-        {% endif %} {% endif %}
+        {% endif %}
       </tr>
     </thead>
 
@@ -46,6 +49,50 @@
     {% else %}
     <h4>There is no employee information</h4>
   </table>
+  {% endif %} {% endcomment %} {% if employees %}
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Phone Number</th>
+        <th>Salary</th>
+        <th>Designation</th>
+        <th>Description</th>
+        <th>Update</th>
+        {% if user.is_authenticated and user.is_superuser %}
+        <th>Delete</th>
+        {% endif %}
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for employee in employees %}
+      <tr>
+        <td>{{ employee.name }}</td>
+        <td>{{ employee.address }}</td>
+        <td>{{ employee.phone_number }}</td>
+        <td>{{ employee.salary}}</td>
+        <td>{{ employee.designation }}</td>
+        <td>{{ employee.description }}</td>
+        <td>
+          <a href="{% url 'update_employee' employee.id %}">
+            <button class="update-button">Update</button>
+          </a>
+        </td>
+        {% if user.is_authenticated and user.is_superuser %}
+        <td>
+          <a href="{% url 'delete_employee' employee.id %}">
+            <button class="delete-button">Delete</button>
+          </a>
+        </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <h2>no data</h2>
   {% endif %}
 </div>
 {% endblock %}
